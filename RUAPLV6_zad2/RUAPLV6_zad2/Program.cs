@@ -1,4 +1,9 @@
-﻿using System;
+﻿// This code requires the Nuget package Microsoft.AspNet.WebApi.Client to be installed.
+// Instructions for doing this in Visual Studio:
+// Tools -> Nuget Package Manager -> Package Manager Console
+// Install-Package Microsoft.AspNet.WebApi.Client
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
@@ -6,7 +11,6 @@ using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-
 
 namespace CallRequestResponseService
 {
@@ -36,8 +40,8 @@ namespace CallRequestResponseService
                             "input1", 
                             new StringTable() 
                             {
-                                ColumnNames = new string[] {"MPG", "Cyl", "Displacement", "Horsepower", "Weight", "Acceleration", "Year", "CountryCode", "Model"},
-                                Values = new string[,] {  { "12", "200000", "320", "260", "1256", "6", "2005", "0", "renault clio" },  { "0", "0", "0", "0", "0", "0", "0", "0", "value" },  }
+                                ColumnNames = new string[] {"Recency", "Frequency", "Monetary", "Time", "Class"},
+                                Values = new string[,] {  { "1", "16", "4000", "35", "1" },  { "6", "25", "12000", "32", "0" },  }
                             }
                         },
                     },
@@ -45,10 +49,10 @@ namespace CallRequestResponseService
                     {
                     }
                 };
-                const string apiKey = "IYAx/r8Sd0QDFNhopLNKtX6TIi5p0auCGXn02EzquJNZ5q18R9A7fYrO6mgYf7FlA+OkMdncGnZpgAH9mukquw=="; // Replace this with the API key for the web service
+                const string apiKey = "P7TftmLPR3slniC7WFErApcHsxXE4wHkmo3Va+pljtm4EnIX2/WA1c7QowAT3KOkoifL5uljq99Lue7P02uylQ=="; // Replace this with the API key for the web service
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
 
-                client.BaseAddress = new Uri("https://ussouthcentral.services.azureml.net/workspaces/94ada53799214ed7b2fb687409803d11/services/0d5ce8fb2931414fa32a4da26c7644f8/execute?api-version=2.0&details=true");
+                client.BaseAddress = new Uri("https://ussouthcentral.services.azureml.net/workspaces/94ada53799214ed7b2fb687409803d11/services/26ece4b15a8841819547bccf779263a3/execute?api-version=2.0&details=true");
 
                 // WARNING: The 'await' statement below can result in a deadlock if you are calling this code from the UI thread of an ASP.Net application.
                 // One way to address this would be to call ConfigureAwait(false) so that the execution does not attempt to resume on the original context.
@@ -62,7 +66,7 @@ namespace CallRequestResponseService
 
                 if (response.IsSuccessStatusCode)
                 {
-                    string result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    string result = await response.Content.ReadAsStringAsync();
                     Console.WriteLine("Result: {0}", result);
                 }
                 else
@@ -75,6 +79,7 @@ namespace CallRequestResponseService
                     string responseContent = await response.Content.ReadAsStringAsync();
                     Console.WriteLine(responseContent);
                 }
+                Console.ReadLine();
             }
         }
     }
